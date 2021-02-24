@@ -1,5 +1,6 @@
 import { EDAWorkspaceContainer } from '@veupathdb/eda-workspace-core';
 import { SubsettingClient } from '@veupathdb/eda-workspace-core/lib/api/eda-api';
+import { DataClient } from '@veupathdb/eda-workspace-core/lib/api/data-service';
 import React, { useCallback, useMemo } from 'react';
 import { useRouteMatch } from 'react-router';
 import { EDASession } from './EDASession';
@@ -11,6 +12,7 @@ interface Props {
   studyId: string;
   sessionId: string;
   edaServiceUrl: string;
+  dataServiceUrl: string;
 }
 export function EDAWorkspace(props: Props) {
   const { url } = useRouteMatch();
@@ -27,6 +29,11 @@ export function EDAWorkspace(props: Props) {
     [props.edaServiceUrl]
   );
 
+  const dataClient: DataClient = useMemo(
+    () => new DataClient({ baseUrl: props.dataServiceUrl }),
+    [props.dataServiceUrl]
+  );
+
   const makeVariableLink = useCallback(
     (entityId: string, variableId: string) =>
       `${url}/variables/${entityId}/${variableId}`,
@@ -39,6 +46,7 @@ export function EDAWorkspace(props: Props) {
       className={cx()}
       sessionClient={mockSessionStore}
       subsettingClient={subsettingClient}
+      dataClient={dataClient}
       makeVariableLink={makeVariableLink}
     >
       <EDAWorkspaceHeading />

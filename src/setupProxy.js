@@ -36,4 +36,15 @@ module.exports = function (app) {
       logLevel: 'debug',
     })
   );
+  app.use(
+    '/eda-data-service',
+    createProxyMiddleware({
+      target: process.env.EDA_DATA_SERVICE_URL,
+      pathRewrite: { [`^/eda-data-service`]: '' },
+      secure: false,
+      changeOrigin: true,
+      followRedirects: true,
+      logLevel: 'debug',
+    })
+  );
 };
