@@ -19,13 +19,10 @@ export function EDAWorkspace(props: Props) {
   const subsettingClient: SubsettingClient = useMemo(
     () =>
       new (class extends SubsettingClient {
-        constructor() {
-          super({ baseUrl: props.edaServiceUrl });
-        }
         async getStudyMetadata() {
           return super.getStudyMetadata('GEMSCC0002-1');
         }
-      })(),
+      })({ baseUrl: props.edaServiceUrl }),
     [props.edaServiceUrl]
   );
 
